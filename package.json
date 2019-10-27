@@ -1,9 +1,9 @@
 {
-  "name": "example-adapter",
-  "display_name": "Example Adapter",
-  "version": "0.6.0",
-  "description": "Example adapter add-on for Mozilla WebThings Gateway",
-  "author": "Mozilla IoT",
+  "name": "mi-air-purifier-adapter",
+  "display_name": "Mi Air Purifier",
+  "version": "0.0.0",
+  "description": "Mi Air Purifier adapter add-on for Mozilla WebThings Gateway",
+  "author": "0x2206",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ."
@@ -12,16 +12,18 @@
     "mozilla",
     "iot",
     "adapter",
-    "example"
+    "mi",
+    "air",
+    "purifier"
   ],
-  "homepage": "https://github.com/mozilla-iot/example-adapter",
+  "homepage": "https://github.com/0x2206/mi-air-purifier-adapter",
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mozilla-iot/example-adapter.git"
+    "url": "https://github.com/0x2206/mi-air-purifier-adapter.git"
   },
   "bugs": {
-    "url": "https://github.com/mozilla-iot/example-adapter/issues"
+    "url": "https://github.com/0x2206/mi-air-purifier-adapter/issues"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -32,8 +34,8 @@
     "README.md",
     "SHA256SUMS",
     "css",
-    "example-adapter.js",
-    "example-api-handler.js",
+    "mi-air-purifier-adapter.js",
+    "mi-air-purifier-api-handler.js",
     "index.js",
     "js",
     "manifest.json",

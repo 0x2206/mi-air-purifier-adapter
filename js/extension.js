@@ -1,7 +1,7 @@
 (function() {
-  class ExampleExtension extends window.Extension {
+  class MiAirPurifierExtension extends window.Extension {
     constructor() {
-      super('example-adapter');
+      super('mi-air-purifier-adapter');
 
       this.content = '';
       fetch(`/extensions/${this.id}/views/content.html`)
@@ -24,7 +24,7 @@
       }
 
       const description = document.getElementById(
-        'extension-example-adapter-thing-description'
+        'extension-mi-air-purifier-adapter-thing-description'
       );
 
       window.API.getJson(
@@ -38,5 +38,5 @@
     }
   }
 
-  new ExampleExtension();
+  new MiAirPurifierExtension();
 })();

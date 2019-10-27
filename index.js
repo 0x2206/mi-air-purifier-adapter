@@ -1,5 +1,5 @@
 /**
- * index.js - Loads the example adapter.
+ * index.js - Loads the Mi Air Purifier adapter.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -8,8 +8,8 @@
 
 'use strict';
 
-const ExampleAdapter = require('./example-adapter');
+const MiAirPuriferAdapter = require('./mi-air-purifier-adapter');
 
 module.exports = (addonManager, manifest) => {
-  new ExampleAdapter(addonManager, manifest);
+  new MiAirPuriferAdapter(addonManager, manifest);
 };

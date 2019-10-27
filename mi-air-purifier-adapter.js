@@ -1,5 +1,5 @@
 /**
- * example-adapter.js - Example adapter.
+ * mi-air-purifier-adapter.js - Mi Air Purifier adapter.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -14,15 +14,15 @@ const {
   Property,
 } = require('gateway-addon');
 
-let ExampleAPIHandler = null;
+let MiAirPurifierAPIHandler = null;
 try {
-  ExampleAPIHandler = require('./example-api-handler');
+  MiAirPurifierAPIHandler = require('./mi-air-purifier-api-handler');
 } catch (e) {
   console.log(`API Handler unavailable: ${e}`);
   // pass
 }
 
-class ExampleProperty extends Property {
+class MiAirPuriferProperty extends Property {
   constructor(device, name, propertyDescription) {
     super(device, name, propertyDescription);
     this.setCachedValue(propertyDescription.value);
@@ -50,7 +50,7 @@ class ExampleProperty extends Property {
   }
 }
 
-class ExampleDevice extends Device {
+class MiAirPurifierDevice extends Device {
   constructor(adapter, id, deviceDescription) {
     super(adapter, id);
     this.name = deviceDescription.name;
@@ -59,32 +59,31 @@ class ExampleDevice extends Device {
     this.description = deviceDescription.description;
     for (const propertyName in deviceDescription.properties) {
       const propertyDescription = deviceDescription.properties[propertyName];
-      const property = new ExampleProperty(this, propertyName,
-                                           propertyDescription);
+      const property = new MiAirPuriferProperty(this, propertyName, propertyDescription);
       this.properties.set(propertyName, property);
     }
 
-    if (ExampleAPIHandler) {
+    if (MiAirPurifierAPIHandler) {
       this.links.push({
         rel: 'alternate',
         mediaType: 'text/html',
         // eslint-disable-next-line max-len
-        href: `/extensions/example-adapter?thingId=${encodeURIComponent(this.id)}`,
+        href: `/extensions/mi-air-purifier-adapter?thingId=${encodeURIComponent(this.id)}`,
       });
     }
   }
 }
 
-class ExampleAdapter extends Adapter {
+class MiAirPuriferAdapter extends Adapter {
   constructor(addonManager, manifest) {
-    super(addonManager, 'ExampleAdapter', manifest.name);
+    super(addonManager, 'MiAirPuriferAdapter', manifest.name);
     addonManager.addAdapter(this);
 
-    if (!this.devices['example-plug']) {
-      const device = new ExampleDevice(this, 'example-plug', {
-        name: 'Example Plug',
+    if (!this.devices['mi-air-purifier-plug']) {
+      const device = new MiAirPurifierDevice(this, 'mi-air-purifier-plug', {
+        name: 'Mi Air Purifier Plug',
         '@type': ['OnOffSwitch', 'SmartPlug'],
-        description: 'Example Device',
+        description: 'Mi Air Purifier Device',
         properties: {
           on: {
             '@type': 'OnOffProperty',
@@ -99,8 +98,8 @@ class ExampleAdapter extends Adapter {
       this.handleDeviceAdded(device);
     }
 
-    if (ExampleAPIHandler) {
-      this.apiHandler = new ExampleAPIHandler(addonManager, this);
+    if (MiAirPurifierAPIHandler) {
+      this.apiHandler = new MiAirPurifierAPIHandler(addonManager, this);
     }
   }
 
@@ -118,7 +117,7 @@ class ExampleAdapter extends Adapter {
       if (deviceId in this.devices) {
         reject(`Device: ${deviceId} already exists.`);
       } else {
-        const device = new ExampleDevice(this, deviceId, deviceDescription);
+        const device = new MiAirPurifierDevice(this, deviceId, deviceDescription);
         this.handleDeviceAdded(device);
         resolve(device);
       }
@@ -126,7 +125,7 @@ class ExampleAdapter extends Adapter {
   }
 
   /**
-   * Example process ro remove a device from the adapter.
+   * Example process to remove a device from the adapter.
    *
    * The important part is to call: `this.handleDeviceRemoved(device)`
    *
@@ -151,7 +150,7 @@ class ExampleAdapter extends Adapter {
    * @param {Number} timeoutSeconds Number of seconds to run before timeout
    */
   startPairing(_timeoutSeconds) {
-    console.log('ExampleAdapter:', this.name,
+    console.log('MiAirPuriferAdapter:', this.name,
                 'id', this.id, 'pairing started');
   }
 
@@ -159,7 +158,7 @@ class ExampleAdapter extends Adapter {
    * Cancel the pairing/discovery process.
    */
   cancelPairing() {
-    console.log('ExampleAdapter:', this.name, 'id', this.id,
+    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id,
                 'pairing cancelled');
   }
 
@@ -169,13 +168,13 @@ class ExampleAdapter extends Adapter {
    * @param {Object} device Device to unpair with
    */
   removeThing(device) {
-    console.log('ExampleAdapter:', this.name, 'id', this.id,
+    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id,
                 'removeThing(', device.id, ') started');
 
     this.removeDevice(device.id).then(() => {
-      console.log('ExampleAdapter: device:', device.id, 'was unpaired.');
+      console.log('MiAirPuriferAdapter: device:', device.id, 'was unpaired.');
     }).catch((err) => {
-      console.error('ExampleAdapter: unpairing', device.id, 'failed');
+      console.error('MiAirPuriferAdapter: unpairing', device.id, 'failed');
       console.error(err);
     });
   }
@@ -186,9 +185,9 @@ class ExampleAdapter extends Adapter {
    * @param {Object} device Device that is currently being paired
    */
   cancelRemoveThing(device) {
-    console.log('ExampleAdapter:', this.name, 'id', this.id,
+    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id,
                 'cancelRemoveThing(', device.id, ')');
   }
 }
 
-module.exports = ExampleAdapter;
+module.exports = MiAirPuriferAdapter;
