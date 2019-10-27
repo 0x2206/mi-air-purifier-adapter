@@ -28,7 +28,6 @@
       );
 
       window.API.getJson(
-        // eslint-disable-next-line max-len
         `/extensions/${this.id}/api/thing-description?thingId=${encodeURIComponent(thingId)}`
       ).then((body) => {
         description.innerText = JSON.stringify(body, null, 2);

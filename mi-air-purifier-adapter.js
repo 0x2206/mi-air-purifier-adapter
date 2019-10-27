@@ -150,16 +150,14 @@ class MiAirPuriferAdapter extends Adapter {
    * @param {Number} timeoutSeconds Number of seconds to run before timeout
    */
   startPairing(_timeoutSeconds) {
-    console.log('MiAirPuriferAdapter:', this.name,
-                'id', this.id, 'pairing started');
+    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id, 'pairing started');
   }
 
   /**
    * Cancel the pairing/discovery process.
    */
   cancelPairing() {
-    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id,
-                'pairing cancelled');
+    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id, 'pairing cancelled');
   }
 
   /**
@@ -168,8 +166,7 @@ class MiAirPuriferAdapter extends Adapter {
    * @param {Object} device Device to unpair with
    */
   removeThing(device) {
-    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id,
-                'removeThing(', device.id, ') started');
+    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id, 'removeThing(', device.id, ') started');
 
     this.removeDevice(device.id).then(() => {
       console.log('MiAirPuriferAdapter: device:', device.id, 'was unpaired.');
@@ -185,8 +182,7 @@ class MiAirPuriferAdapter extends Adapter {
    * @param {Object} device Device that is currently being paired
    */
   cancelRemoveThing(device) {
-    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id,
-                'cancelRemoveThing(', device.id, ')');
+    console.log('MiAirPuriferAdapter:', this.name, 'id', this.id, 'cancelRemoveThing(', device.id, ')');
   }
 }
 
