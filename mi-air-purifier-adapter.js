@@ -1,18 +1,7 @@
-/**
- * mi-air-purifier-adapter.js - Mi Air Purifier adapter.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */
-
 'use strict';
 
-const {
-  Adapter,
-  Device,
-  Property,
-} = require('gateway-addon');
+const {Adapter} = require('gateway-addon');
+const {MiAirPurifierDevice} = require('./mi-air-purifier-device');
 
 let MiAirPurifierAPIHandler = null;
 try {
@@ -20,58 +9,6 @@ try {
 } catch (e) {
   console.log(`API Handler unavailable: ${e}`);
   // pass
-}
-
-class MiAirPuriferProperty extends Property {
-  constructor(device, name, propertyDescription) {
-    super(device, name, propertyDescription);
-    this.setCachedValue(propertyDescription.value);
-    this.device.notifyPropertyChanged(this);
-  }
-
-  /**
-   * Set the value of the property.
-   *
-   * @param {*} value The new value to set
-   * @returns a promise which resolves to the updated value.
-   *
-   * @note it is possible that the updated value doesn't match
-   * the value passed in.
-   */
-  setValue(value) {
-    return new Promise((resolve, reject) => {
-      super.setValue(value).then((updatedValue) => {
-        resolve(updatedValue);
-        this.device.notifyPropertyChanged(this);
-      }).catch((err) => {
-        reject(err);
-      });
-    });
-  }
-}
-
-class MiAirPurifierDevice extends Device {
-  constructor(adapter, id, deviceDescription) {
-    super(adapter, id);
-    this.name = deviceDescription.name;
-    this.type = deviceDescription.type;
-    this['@type'] = deviceDescription['@type'];
-    this.description = deviceDescription.description;
-    for (const propertyName in deviceDescription.properties) {
-      const propertyDescription = deviceDescription.properties[propertyName];
-      const property = new MiAirPuriferProperty(this, propertyName, propertyDescription);
-      this.properties.set(propertyName, property);
-    }
-
-    if (MiAirPurifierAPIHandler) {
-      this.links.push({
-        rel: 'alternate',
-        mediaType: 'text/html',
-        // eslint-disable-next-line max-len
-        href: `/extensions/mi-air-purifier-adapter?thingId=${encodeURIComponent(this.id)}`,
-      });
-    }
-  }
 }
 
 class MiAirPuriferAdapter extends Adapter {
