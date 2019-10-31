@@ -56,6 +56,14 @@ const AvailableProperties = {
 // }
 
 const properties = [{
+  name: 'power',
+  metadata: {
+    value: '',
+    title: 'Power',
+    type: 'boolean',
+    '@type': AvailableProperties.OnOffProperty,
+  },
+}, {
   name: 'pm2.5',
   metadata: {
     value: 0,
@@ -75,13 +83,11 @@ const properties = [{
 }, {
   name: 'temperature',
   metadata: {
-    value: 10,
+    value: 20,
     title: 'Temperature',
     type: 'number',
     '@type': AvailableProperties.TemperatureProperty,
     unit: 'ºC',
-    minimum: 0,
-    maximum: 50,
     readOnly: true,
   },
 }, {
@@ -140,13 +146,9 @@ const properties = [{
 //   },
 }];
 
-// const actions = [{}]
+// const actions = []
 
-// const events = [{
-//   name: 'switchToTurboMode',
-// }, {
-//   name: 'switchToEffectiveMode',
-// }];
+// const events = [];
 
 class MiAirPurifierDevice extends Device {
   /**
@@ -155,11 +157,13 @@ class MiAirPurifierDevice extends Device {
    * @param {MiioDeviceEnvelope} deviceEnvelope
    */
   constructor(adapter, deviceEnvelope) {
-    const deviceId = `mi-air-purifier-${deviceEnvelope.id}`;
+    const deviceId = `mi-air-purifier-${deviceEnvelope.id}`; // TODO: change to `miio:ID_HERE`?
 
     super(adapter, deviceId);
 
-    this.name = `Mi Air Purifier: #${deviceEnvelope.id} (${deviceEnvelope.address})`;
+    this.deviceEnvelope = deviceEnvelope;
+
+    this.name = this.setName();
 
     this.description = 'Mi Air Purifier Device';
 
@@ -186,6 +190,10 @@ class MiAirPurifierDevice extends Device {
       mediaType: 'text/html',
       href: `/extensions/mi-air-purifier-adapter?thingId=${encodeURIComponent(this.id)}`,
     });
+  }
+
+  setName(name = 'Mi Air Purifier') {
+    this.name = `${name}: #${this.deviceEnvelope.id} (${this.deviceEnvelope.address})`;
   }
 }
 

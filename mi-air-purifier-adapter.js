@@ -94,12 +94,14 @@ class MiAirPuriferAdapter extends Adapter {
    * @param {MiioDeviceEnvelope} deviceEnvelope
    */
   handleDeviceAvailable(deviceEnvelope) {
-    if (deviceEnvelope.device.matches('type:air-purifier')) {
-      // miioDevice.temperature()
-      //   .then((temp) => console.log('!! Temperature:', temp.celsius));
-      const d = new MiAirPurifierDevice(this, deviceEnvelope);
-      this.handleDeviceAdded(d);
+    const d = new MiAirPurifierDevice(this, deviceEnvelope);
+
+    if (!deviceEnvelope.device.matches('type:air-purifier')) {
+      d.setName('Unknown Mi Device');
+      d.pinRequired = true;
     }
+
+    this.handleDeviceAdded(d);
   }
 
   /**
