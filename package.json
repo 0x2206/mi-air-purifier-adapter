@@ -25,6 +25,10 @@
   "bugs": {
     "url": "https://github.com/0x2206/mi-air-purifier-adapter/issues"
   },
+  "dependencies": {
+    "gateway-addon": "https://github.com/mozilla-iot/gateway-addon-node",
+    "miio": "^0.15.6"
+  },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
     "eslint": "^6.4.0"
@@ -46,8 +50,36 @@
       "min": 2,
       "max": 2
     },
-    "type": "adapter",
     "plugin": true,
-    "exec": "{nodeLoader} {path}"
+    "exec": "{nodeLoader} {path}",
+    "config": {
+      "tokens": []
+    },
+    "schema": {
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "description": "Tokens",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "deviceId",
+              "token"
+            ],
+            "properties": {
+              "deviceId": {
+                "type": "number",
+                "description": "Device ID"
+              },
+              "token": {
+                "type": "string",
+                "description": "Token"
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

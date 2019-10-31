@@ -23,8 +23,8 @@
   "id": "mi-air-purifier-adapter",
   "license": "MPL-2.0",
   "manifest_version": 1,
-  "name": "Mi Air Purifier adapter",
-  "short_name": "Air Purifier",
+  "name": "Mi Air Purifier",
+  "short_name": "Mi Air Purifier",
   "version": "0.0.0",
   "web_accessible_resources": [
     "css/*.css",
