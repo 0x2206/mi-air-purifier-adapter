@@ -99,9 +99,13 @@ class MiAirPuriferAdapter extends Adapter {
     if (!deviceEnvelope.device.matches('type:air-purifier')) {
       d.setName('Unknown Mi Device');
       d.pinRequired = true;
+      // d.pinPattern = ''; // TODO
     }
 
-    this.handleDeviceAdded(d);
+    // FIXME: it should prevent re-setting already added devices
+    if (!this.devices[d.id]) {
+      this.handleDeviceAdded(d);
+    }
   }
 
   /**

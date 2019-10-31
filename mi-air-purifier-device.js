@@ -114,7 +114,7 @@ const properties = [{
 }, {
   name: 'favoriteLevel',
   metadata: {
-    value: 0,
+    value: 4, // Most effective level considering generated noise
     title: 'Favorite mode speed',
     type: 'number',
     '@type': AvailableProperties.MultiLevelSwitch,
@@ -146,7 +146,21 @@ const properties = [{
 //   },
 }];
 
-// const actions = []
+const actions = [{
+  name: 'turbo',
+  metadata: {
+    '@type': 'FadeAction',
+    title: 'Turbo mode',
+    description: 't',
+  },
+}, {
+  name: 'balanced',
+  metadata: {
+    '@type': 'FadeAction',
+    title: 'Balanced mode',
+    description: 'b',
+  },
+}];
 
 // const events = [];
 
@@ -177,9 +191,9 @@ class MiAirPurifierDevice extends Device {
       this.properties.set(prop.name, new MiAirPuriferProperty(this, prop.name, prop.metadata));
     });
 
-    // actions.forEach((action) => {
-    //   this.actions.set();
-    // });
+    actions.forEach((action) => {
+      this.addAction(action.name, action.metadata);
+    });
 
     // events.forEach((event) => {
     //   this.events.set();
