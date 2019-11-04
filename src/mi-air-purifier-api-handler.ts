@@ -1,17 +1,15 @@
-'use strict';
+import { APIHandler, APIResponse } from 'gateway-addon';
+import { id } from './manifest.json';
 
-const {APIHandler, APIResponse} = require('gateway-addon');
-const manifest = require('./manifest.json');
-
-class MiAirPurifierAPIHandler extends APIHandler {
-  constructor(addonManager, adapter) {
-    super(addonManager, manifest.id);
+export default class MiAirPurifierAPIHandler extends APIHandler {
+  constructor(addonManager: any, adapter: any) {
+    super(addonManager, id);
     addonManager.addAPIHandler(this);
 
     this.adapter = adapter;
   }
 
-  async handleRequest(request) {
+  async handleRequest(request: any) {
     if (request.method !== 'GET' || request.path !== '/thing-description') {
       return new APIResponse({status: 404});
     }
@@ -33,5 +31,3 @@ class MiAirPurifierAPIHandler extends APIHandler {
     });
   }
 }
-
-module.exports = MiAirPurifierAPIHandler;

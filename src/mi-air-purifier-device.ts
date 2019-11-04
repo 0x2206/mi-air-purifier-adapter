@@ -1,61 +1,15 @@
-'use strict';
-
-const {Device} = require('gateway-addon');
-const {MiAirPuriferProperty} = require('./mi-air-purifer-property');
+import { Device, Adapter } from 'gateway-addon';
+import MiAirPuriferProperty from './mi-air-purifer-property';
+import { Property, MiioDeviceEnvelope } from './contracts';
+import { AvailableProperties, AvailableCapabilities } from './enums';
 // const {MiAirPurifierAPIHandler} = require('./mi-air-purifier-api-handler');
-
-const AvailableCapabilities = {
-  Alarm: 'Alarm',
-  BinarySensor: 'BinarySensor',
-  Camera: 'Camera',
-  ColorControl: 'ColorControl',
-  DoorSensor: 'DoorSensor',
-  EnergyMonitor: 'EnergyMonitor',
-  LeakSensor: 'LeakSensor',
-  Light: 'Light',
-  Lock: 'Lock',
-  MotionSensor: 'MotionSensor',
-  MultiLevelSensor: 'MultiLevelSensor',
-  MultiLevelSwitch: 'MultiLevelSwitch',
-  OnOffSwitch: 'OnOffSwitch',
-  PushButton: 'PushButton',
-  SmartPlug: 'SmartPlug',
-  TemperatureSensor: 'TemperatureSensor',
-  Thermostat: 'Thermostat',
-  VideoCamera: 'VideoCamera',
-};
-
-const AvailableProperties = {
-  AlarmProperty: 'AlarmProperty',
-  BooleanProperty: 'BooleanProperty',
-  BrightnessProperty: 'BrightnessProperty',
-  ColorProperty: 'ColorProperty',
-  ColorTemperatureProperty: 'ColorTemperatureProperty',
-  CurrentProperty: 'CurrentProperty',
-  FrequencyProperty: 'FrequencyProperty',
-  HeatingCoolingProperty: 'HeatingCoolingProperty',
-  ImageProperty: 'ImageProperty',
-  InstantaneousPowerProperty: 'InstantaneousPowerProperty',
-  LeakProperty: 'LeakProperty',
-  LevelProperty: 'LevelProperty',
-  LockedProperty: 'LockedProperty',
-  MotionProperty: 'MotionProperty',
-  OnOffProperty: 'OnOffProperty',
-  OpenProperty: 'OpenProperty',
-  PushedProperty: 'PushedProperty',
-  TargetTemperatureProperty: 'TargetTemperatureProperty',
-  TemperatureProperty: 'TemperatureProperty',
-  ThermostatModeProperty: 'ThermostatModeProperty',
-  VideoProperty: 'VideoProperty',
-  VoltageProperty: 'VoltageProperty',
-};
 
 // const MiIOProperties = {
 //   temperature: 'temperature',
 //   pm25: 'pm2.5',
 // }
 
-const properties = [{
+const properties: Property[] = [{
   name: 'power',
   metadata: {
     value: '',
@@ -105,11 +59,11 @@ const properties = [{
 }, {
   name: 'mode',
   metadata: {
-    value: 'idle',
+    value: 'auto', // TODO: Add `idle`
     title: 'Mode',
     type: 'string',
     '@type': AvailableProperties.MultiLevelSwitch,
-    enum: ['idle', 'auto', 'silent', 'favorite'],
+    enum: ['auto', 'silent', 'favorite'], // TODO: Add `idle` support
   },
 }, {
   name: 'favoriteLevel',
@@ -118,7 +72,7 @@ const properties = [{
     title: 'Favorite mode speed',
     type: 'number',
     '@type': AvailableProperties.MultiLevelSwitch,
-    enum: [...Array(17).keys()],
+    enum: Array.from(Array(17).keys()),
   },
 }, {
   name: 'filterLifeRemaining',
@@ -149,35 +103,37 @@ const properties = [{
 const actions = [{
   name: 'turbo',
   metadata: {
-    '@type': 'FadeAction',
+    '@type': 'SwitchModeAction',
     title: 'Turbo mode',
-    description: 't',
   },
 }, {
   name: 'balanced',
   metadata: {
-    '@type': 'FadeAction',
+    '@type': 'SwitchModeAction',
     title: 'Balanced mode',
-    description: 'b',
   },
 }];
 
-// const events = [];
+const events = properties.map((prop) => {
+  return {
+    name: '`${prop.name}` changed',
+    // type: prop.type,
+    metadata: {
+      '@type': '',
+      title: '',
+    },
+  };
+});
 
-class MiAirPurifierDevice extends Device {
-  /**
-   *
-   * @param {Adapter} adapter
-   * @param {MiioDeviceEnvelope} deviceEnvelope
-   */
-  constructor(adapter, deviceEnvelope) {
+export default class MiAirPurifierDevice extends Device {
+  constructor(adapter: any, deviceEnvelope: MiioDeviceEnvelope) {
     const deviceId = `mi-air-purifier-${deviceEnvelope.id}`; // TODO: change to `miio:ID_HERE`?
 
     super(adapter, deviceId);
 
     this.deviceEnvelope = deviceEnvelope;
 
-    this.name = this.setName();
+    this.setName();
 
     this.description = 'Mi Air Purifier Device';
 
@@ -195,9 +151,9 @@ class MiAirPurifierDevice extends Device {
       this.addAction(action.name, action.metadata);
     });
 
-    // events.forEach((event) => {
-    //   this.events.set();
-    // });
+    events.forEach((event) => {
+      this.addEvent(event.name, event.metadata);
+    });
 
     this.links.push({
       rel: 'alternate',
@@ -210,5 +166,3 @@ class MiAirPurifierDevice extends Device {
     this.name = `${name}: #${this.deviceEnvelope.id} (${this.deviceEnvelope.address})`;
   }
 }
-
-exports.MiAirPurifierDevice = MiAirPurifierDevice;

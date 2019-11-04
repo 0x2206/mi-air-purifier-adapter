@@ -1,0 +1,34 @@
+{
+  "author": "0x2206",
+  "content_scripts": [
+    {
+      "css": [
+        "css/extension.css"
+      ],
+      "js": [
+        "js/extension.js"
+      ]
+    }
+  ],
+  "description": "Mi Air Purifier adapter add-on for Mozilla WebThings Gateway",
+  "gateway_specific_settings": {
+    "webthings": {
+      "exec": "{nodeLoader} {path}",
+      "primary_type": "adapter",
+      "strict_max_version": "*",
+      "strict_min_version": "0.10.0"
+    }
+  },
+  "homepage_url": "https://github.com/0x2206/mi-air-purifier-adapter",
+  "id": "mi-air-purifier-adapter",
+  "license": "MPL-2.0",
+  "manifest_version": 1,
+  "name": "Mi Air Purifier",
+  "short_name": "Mi Air Purifier",
+  "version": "0.0.0",
+  "web_accessible_resources": [
+    "css/*.css",
+    "js/*.js",
+    "views/*.html"
+  ]
+}

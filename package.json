@@ -6,7 +6,14 @@
   "author": "0x2206",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ."
+    "build": "rm -rf dist && mkdir -p dist && tsc && npm run copy && npm run sha256sums",
+    "fix": "npm run lint -- --fix",
+    "lint": "tslint --project tsconfig.json --config tslint.json src/**/*.ts",
+    "prebuild": "npm test",
+    "pretest": "npm run lint",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "copy": "cp -r package.json LICENSE README.md src/extension/. dist/",
+    "sha256sums": "./package.sh"
   },
   "keywords": [
     "mozilla",
@@ -30,8 +37,9 @@
     "miio": "^0.15.6"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.4.0"
+    "@types/node": "^12.12.5",
+    "tslint": "^6.0.0-beta0",
+    "typescript": "^3.6.4"
   },
   "files": [
     "LICENSE",

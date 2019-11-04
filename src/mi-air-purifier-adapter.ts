@@ -1,31 +1,20 @@
-'use strict';
+import { Adapter } from 'gateway-addon';
+import { devices } from 'miio';
+import MiAirPurifierDevice from './mi-air-purifier-device';
+import MiAirPurifierAPIHandler from './mi-air-purifier-api-handler';
+import { MiioDeviceEnvelope } from './contracts';
 
-const {
-  Adapter,
-  // Database,
-} = require('gateway-addon');
-const miio = require('miio');
-const {MiAirPurifierDevice} = require('./mi-air-purifier-device');
-
-let MiAirPurifierAPIHandler = null;
-try {
-  MiAirPurifierAPIHandler = require('./mi-air-purifier-api-handler');
-} catch (e) {
-  console.log(`API Handler unavailable: ${e}`);
-  // pass
-}
-
-class MiAirPuriferAdapter extends Adapter {
-  constructor(addonManager, manifest) {
+export default class MiAirPuriferAdapter extends Adapter {
+  constructor(addonManager: any, manifest: any) {
     super(addonManager, 'MiAirPuriferAdapter', manifest.name);
 
     addonManager.addAdapter(this);
 
     // this.db = new Database(this.packageName);
 
-    miio.devices({
+    devices({
       useTokenStorage: false,
-    }).on('available', (deviceEnvelope) => {
+    }).on('available', (deviceEnvelope: MiioDeviceEnvelope) => {
       this.handleDeviceAvailable(deviceEnvelope);
     });
 
@@ -75,17 +64,12 @@ class MiAirPuriferAdapter extends Adapter {
   //   });
   // }
 
-  /**
-   * Start the pairing/discovery process.
-   *
-   * @param {Number} timeoutSeconds Number of seconds to run before timeout
-   */
-  startPairing(_timeoutSeconds) {
+  startPairing(timeout: number) {
     // console.log('MiAirPuriferAdapter:', this.name, 'id', this.id, 'pairing started');
 
-    miio.devices({
+    devices({
       useTokenStorage: false,
-    }).on('available', (deviceEnvelope) => {
+    }).on('available', (deviceEnvelope: MiioDeviceEnvelope) => {
       this.handleDeviceAvailable(deviceEnvelope);
     });
   }
@@ -93,7 +77,7 @@ class MiAirPuriferAdapter extends Adapter {
   /**
    * @param {MiioDeviceEnvelope} deviceEnvelope
    */
-  handleDeviceAvailable(deviceEnvelope) {
+  handleDeviceAvailable(deviceEnvelope: MiioDeviceEnvelope) {
     const d = new MiAirPurifierDevice(this, deviceEnvelope);
 
     if (!deviceEnvelope.device.matches('type:air-purifier')) {
@@ -140,5 +124,3 @@ class MiAirPuriferAdapter extends Adapter {
   //   console.log('MiAirPuriferAdapter:', this.name, 'id', this.id, 'cancelRemoveThing(', device.id, ')');
   // }
 }
-
-module.exports = MiAirPuriferAdapter;

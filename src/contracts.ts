@@ -1,17 +1,19 @@
-interface MiioDeviceEnvelope {
+import { AvailableCapabilities, AvailableProperties } from './enums';
+
+export interface MiioDeviceEnvelope {
   id: number
   address: string // IP
   port: number
   token: Buffer | null
   autoToken: boolean
   device: MiioDevice
-  matches: Function
+  matches: (_: string) => boolean
 }
 
-interface MiioDevice {
+export interface MiioDevice {
   id: string
   metadata: MiioMetadata
-  internalPoll: Function
+  internalPoll: () => void
   handle: {
     ref: {}
     api: {}
@@ -21,16 +23,16 @@ interface MiioDevice {
   _propertiesToMonitor: []
   _propertyDefinitions: {}
   _reversePropertyDefinitions: {}
-  poll: Function
+  poll: () => void
   management: MiioDeviceManagement
   matches: (_: string) => boolean
 }
 
-interface MiioDeviceManagement {
+export interface MiioDeviceManagement {
   api: {} // TODO
 }
 
-interface MiioMetadata {
+export interface MiioMetadata {
   types: Set<'miio:air-purifier' | 'sensor' | 'miio' | 'air-purifier'>
   capabilities: Set<'miio:buzzer' | 'miio:led-brightness' | 'miio:switchable-led' | 'pm2.5' | 'relative-humidity' | 'temperature' | 'switchable-mode' | 'mode' | 'switchable-power' | 'restorable-state' | 'power' | 'state'>
   action: {} // TODO
@@ -38,6 +40,21 @@ interface MiioMetadata {
   events: {} // TODO
 }
 
-interface WebThingDevice {
-  '@type': Array<'OnOffSwitch' | 'BinarySensor' | 'MultiLevelSwitch' | 'Light' | 'SmartPlug' | 'ColorControl' | 'EnergyMonitor'>
+export interface WebThingDevice {
+  '@type': ('OnOffSwitch' | 'BinarySensor' | 'MultiLevelSwitch' | 'Light' | 'SmartPlug' | 'ColorControl' | 'EnergyMonitor')[]
+}
+
+export interface Property {
+  name: string
+  metadata: {
+    '@type': AvailableProperties
+    title: string
+    type: 'boolean' | 'number' | 'string'
+    unit?: string
+    value: any
+    readOnly?: boolean
+    minimum?: number
+    maximum?: number
+    enum?: (string|number)[]
+  },
 }
