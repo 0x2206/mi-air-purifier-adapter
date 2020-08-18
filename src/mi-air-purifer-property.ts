@@ -14,10 +14,20 @@ export default class MiAirPuriferProperty extends Property {
       .then((dev: any) => {
         // console.log('!! dev', device);
 
-        dev.on(`${name}Changed`, (_: any) => {
-          // this.setValue(_.value || _);
+        return dev.call(`${name}`).then((_: any) => {
+          // tslint:disable-next-line
+          console.log('!! then', _);
           this.setValue(_.value || _, 'device');
+        })
+        .catch((err: any) => {
+          // tslint:disable-next-line
+          console.log('!! err', err);
         });
+
+        // dev.on(`${name}Changed`, (_: any) => {
+        //   // this.setValue(_.value || _);
+        //   this.setValue(_.value || _, 'device');
+        // });
 
         // device.pm2_5().then((_) => this.setValue(_));
         // device.on('temperature', (temp) => {

@@ -1,4 +1,4 @@
-export const enum AvailableCapabilities {
+export const enum WebThingsCapabilities {
   Alarm = 'Alarm',
   BinarySensor = 'BinarySensor',
   Camera = 'Camera',
@@ -19,7 +19,7 @@ export const enum AvailableCapabilities {
   VideoCamera = 'VideoCamera',
 }
 
-export const enum AvailableProperties {
+export const enum WebThingsProperties {
   AlarmProperty = 'AlarmProperty',
   BooleanProperty = 'BooleanProperty',
   BrightnessProperty = 'BrightnessProperty',
@@ -43,4 +43,10 @@ export const enum AvailableProperties {
   ThermostatModeProperty = 'ThermostatModeProperty',
   VideoProperty = 'VideoProperty',
   VoltageProperty = 'VoltageProperty',
+}
+
+export const DeviceProperties = {
+  Power: 'power',
+  AQI: 'aqi',
+
 }

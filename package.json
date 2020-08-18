@@ -6,14 +6,16 @@
   "author": "0x2206",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf dist && mkdir -p dist && tsc && npm run copy && npm run sha256sums",
+    "build": "npm run clean && tsc && npm run copy && npm run sha256sums",
+    "clean": "rm -rf dist && mkdir -p dist",
+    "copy": "cp -r package.json LICENSE README.md src/extension/. dist/",
     "fix": "npm run lint -- --fix",
     "lint": "tslint --project tsconfig.json --config tslint.json src/**/*.ts",
     "prebuild": "npm test",
     "pretest": "npm run lint",
+    "sha256sums": "./package.sh",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "copy": "cp -r package.json LICENSE README.md src/extension/. dist/",
-    "sha256sums": "./package.sh"
+    "watch": "npm run build && tsc --watch"
   },
   "keywords": [
     "mozilla",

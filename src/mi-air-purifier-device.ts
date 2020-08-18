@@ -1,7 +1,7 @@
 import { Device, Adapter } from 'gateway-addon';
 import MiAirPuriferProperty from './mi-air-purifer-property';
 import { Property, MiioDeviceEnvelope } from './contracts';
-import { AvailableProperties, AvailableCapabilities } from './enums';
+import { WebThingsProperties, WebThingsCapabilities } from './enums';
 // const {MiAirPurifierAPIHandler} = require('./mi-air-purifier-api-handler');
 
 // const MiIOProperties = {
@@ -12,45 +12,39 @@ import { AvailableProperties, AvailableCapabilities } from './enums';
 const properties: Property[] = [{
   name: 'power',
   metadata: {
-    value: '',
+    value: 'off',
     title: 'Power',
     type: 'boolean',
-    '@type': AvailableProperties.OnOffProperty,
+    '@type': WebThingsProperties.OnOffProperty,
   },
 }, {
-  name: 'pm2.5',
+  name: 'aqi',
   metadata: {
     value: 0,
     title: 'PM2.5',
     type: 'number',
-    '@type': AvailableProperties.LevelProperty,
+    '@type': WebThingsProperties.LevelProperty,
     unit: 'µg/m³',
-    // description: '',
     minimum: 0,
-    // maximum: 25,
-    // enum: null,
     readOnly: true,
-    // multipleOf: null,
-    // links: null,
-    // visible: true,
   },
 }, {
-  name: 'temperature',
+  name: 'temp_dec',
   metadata: {
-    value: 20,
+    value: 20.0,
     title: 'Temperature',
     type: 'number',
-    '@type': AvailableProperties.TemperatureProperty,
+    '@type': WebThingsProperties.TemperatureProperty,
     unit: 'ºC',
     readOnly: true,
   },
 }, {
-  name: 'relativeHumidity',
+  name: 'humidity',
   metadata: {
     value: 50,
     title: 'Humidity',
     type: 'number',
-    '@type': AvailableProperties.LevelProperty,
+    '@type': WebThingsProperties.LevelProperty,
     unit: '%',
     minimum: 0,
     maximum: 100,
@@ -59,28 +53,28 @@ const properties: Property[] = [{
 }, {
   name: 'mode',
   metadata: {
-    value: 'auto', // TODO: Add `idle`
+    value: 'favorite', // TODO: Add `idle`
     title: 'Mode',
     type: 'string',
-    '@type': AvailableProperties.MultiLevelSwitch,
+    '@type': WebThingsProperties.MultiLevelSwitch,
     enum: ['auto', 'silent', 'favorite'], // TODO: Add `idle` support
   },
 }, {
-  name: 'favoriteLevel',
+  name: 'favorite_level',
   metadata: {
     value: 4, // Most effective level considering generated noise
     title: 'Favorite mode speed',
     type: 'number',
-    '@type': AvailableProperties.MultiLevelSwitch,
+    '@type': WebThingsProperties.MultiLevelSwitch,
     enum: Array.from(Array(17).keys()),
   },
 }, {
-  name: 'filterLifeRemaining',
+  name: 'filter1_life',
   metadata: {
     value: 100,
     title: 'Filter remaining',
     type: 'number',
-    '@type': AvailableProperties.LevelProperty,
+    '@type': WebThingsProperties.LevelProperty,
     unit: '%',
     minimum: 0,
     maximum: 100,
@@ -140,7 +134,7 @@ export default class MiAirPurifierDevice extends Device {
     this.address = deviceEnvelope.address;
 
     this['@type'] = [
-      AvailableCapabilities.MultiLevelSensor,
+      WebThingsCapabilities.MultiLevelSensor,
     ];
 
     properties.forEach((prop) => {

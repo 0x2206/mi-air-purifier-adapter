@@ -1,4 +1,4 @@
-import { AvailableCapabilities, AvailableProperties } from './enums';
+import { WebThingsCapabilities, WebThingsProperties } from './enums';
 
 export interface MiioDeviceEnvelope {
   id: number
@@ -47,7 +47,7 @@ export interface WebThingDevice {
 export interface Property {
   name: string
   metadata: {
-    '@type': AvailableProperties
+    '@type': WebThingsProperties
     title: string
     type: 'boolean' | 'number' | 'string'
     unit?: string
